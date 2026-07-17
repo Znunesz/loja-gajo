@@ -66,8 +66,6 @@ function abrirModal(id) {
     } else {
         modalMiniaturas.style.display = "none";
     }
-
-    // Tamanhos
     modalTamanhos.innerHTML = "";
     if (produto.tamanhos && produto.tamanhos.length > 0) {
         modalTamanhosWrap.style.display = "block";
