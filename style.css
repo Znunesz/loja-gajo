@@ -220,3 +220,187 @@ header h1 {
 #btnFinalizar:hover {
     background: #1ebe5b;
 }
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal-overlay.aberto {
+    display: flex;
+}
+
+.modal-produto {
+    background: white;
+    border-radius: 16px;
+    max-width: 900px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    display: flex;
+    position: relative;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+}
+
+.modal-fechar {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    background: #111;
+    color: white;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+    line-height: 1;
+    z-index: 2;
+}
+
+.modal-fechar:hover {
+    background: #333;
+}
+
+.modal-galeria {
+    flex: 1;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 0;
+}
+
+.modal-galeria img#modalImagemPrincipal {
+    width: 100%;
+    height: 380px;
+    object-fit: cover;
+    border-radius: 12px;
+    background: #f0f0f0;
+}
+
+.modal-miniaturas {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.modal-miniaturas img {
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+    border-radius: 8px;
+    cursor: pointer;
+    opacity: 0.6;
+    border: 2px solid transparent;
+    transition: opacity 0.2s ease, border-color 0.2s ease;
+}
+
+.modal-miniaturas img:hover {
+    opacity: 0.9;
+}
+
+.modal-miniaturas img.ativa {
+    opacity: 1;
+    border-color: #111;
+}
+
+.modal-info {
+    flex: 1;
+    padding: 25px 30px 25px 0;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.modal-info h2 {
+    font-size: 22px;
+    margin-bottom: 8px;
+    padding-right: 30px;
+}
+
+.modal-preco {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 16px;
+}
+
+.modal-descricao {
+    color: #555;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.modal-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.modal-tamanhos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+.btn-tamanho {
+    background: white;
+    border: 1px solid #ccc;
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    min-width: 42px;
+    transition: all 0.2s ease;
+}
+
+.btn-tamanho:hover {
+    border-color: #111;
+}
+
+.btn-tamanho.selecionado {
+    background: #111;
+    color: white;
+    border-color: #111;
+}
+
+#modalAdicionar {
+    margin-top: auto;
+    background: #111;
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: bold;
+    transition: background 0.2s ease;
+}
+
+#modalAdicionar:hover {
+    background: #333;
+}
+
+.card-produto {
+    cursor: pointer;
+}
+
+@media (max-width: 640px) {
+    .modal-produto {
+        flex-direction: column;
+        max-height: 95vh;
+    }
+    .modal-info {
+        padding: 0 25px 25px;
+    }
+}
