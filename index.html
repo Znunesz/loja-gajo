@@ -30,6 +30,27 @@
         <button id="fecharCarrinho">Fechar</button>
     </div>
 
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-produto">
+            <button class="modal-fechar" id="modalFechar">&times;</button>
+            <div class="modal-galeria">
+                <img id="modalImagemPrincipal" src="" alt="">
+                <div class="modal-miniaturas" id="modalMiniaturas"></div>
+            </div>
+            <div class="modal-info">
+                <h2 id="modalNome"></h2>
+                <p class="modal-preco" id="modalPreco"></p>
+                <p class="modal-descricao" id="modalDescricao"></p>
+                <div id="modalTamanhosWrap">
+                    <p class="modal-label">Tamanho</p>
+                    <div class="modal-tamanhos" id="modalTamanhos"></div>
+                </div>
+                <button id="modalAdicionar">Adicionar ao carrinho</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="produtos.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
