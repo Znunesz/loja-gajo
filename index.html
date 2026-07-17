@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <title>GAJO</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body><header>
+        <h1>GAJO</h1>
+        <div class="carrinho-icone" id="btnCarrinho">
+            🛒 <span id="contadorCarrinho">0</span>
+        </div>
+    </header>
+<div class="filtros">
+    <button class="btn-filtro ativo" data-categoria="todos">Todos</button>
+    <button class="btn-filtro" data-categoria="camisa">Camisas</button>
+    <button class="btn-filtro" data-categoria="calca">Calças</button>
+    <button class="btn-filtro" data-categoria="jaqueta">Jaquetas</button>
+    <button class="btn-filtro" data-categoria="tenis">Tênis</button>
+</div>
+    <section class="produtos" id="listaProdutos">
+    </section>
+
+    <div class="carrinho-painel" id="painelCarrinho">
+        <h2>Seu Carrinho</h2>
+        <div id="itensCarrinho"></div>
+        <p>Total: R$ <span id="totalCarrinho">0,00</span></p>
+        <button id="btnFinalizar">Finalizar no WhatsApp</button>
+        <button id="fecharCarrinho">Fechar</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
