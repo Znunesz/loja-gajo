@@ -1,30 +1,123 @@
-const produtos=[
-    {id:1,nome: "camisa branca", preco: 59.90, categoria: "camisa", imagem: "img/camisa.webp" },
-    { id: 2, nome: "Calça Jeans", preco: 99.90, categoria: "calca", imagem: "img/calça.webp" },
-    { id: 3, nome: "Jaqueta Preta", preco: 199.90, categoria: "jaqueta", imagem: "img/jaqueta.webp"},
-    { id: 4, nome: "Tênis Branco", preco: 249.90, categoria: "tenis", imagem: "img/tenis.webp"},
-]
 let carrinho = [];
+let produtoAberto = null;
+let tamanhoSelecionado = null;
 
 const listaProdutos = document.querySelector("#listaProdutos");
 const painelCarrinho = document.querySelector("#painelCarrinho");
 const itensCarrinho = document.querySelector("#itensCarrinho");
 const totalCarrinho = document.querySelector("#totalCarrinho");
 const contadorCarrinho = document.querySelector("#contadorCarrinho");
-function mostrarProdutos(lista=produtos) {
+
+const modalOverlay = document.querySelector("#modalOverlay");
+const modalImagemPrincipal = document.querySelector("#modalImagemPrincipal");
+const modalMiniaturas = document.querySelector("#modalMiniaturas");
+const modalNome = document.querySelector("#modalNome");
+const modalPreco = document.querySelector("#modalPreco");
+const modalDescricao = document.querySelector("#modalDescricao");
+const modalTamanhosWrap = document.querySelector("#modalTamanhosWrap");
+const modalTamanhos = document.querySelector("#modalTamanhos");
+const modalAdicionar = document.querySelector("#modalAdicionar");
+
+function mostrarProdutos(lista = produtos) {
     listaProdutos.innerHTML = "";
     lista.forEach(produto => {
         const card = document.createElement("div");
         card.classList.add("card-produto");
         card.innerHTML = `
-            <img src="${produto.imagem}" alt="${produto.nome}">
+            <img src="${produto.imagens[0]}" alt="${produto.nome}">
             <h3>${produto.nome}</h3>
             <p>R$ ${produto.preco.toFixed(2)}</p>
-            <button onclick="adicionarAoCarrinho(${produto.id})">Adicionar</button>
+            <button>Ver produto</button>
         `;
+        card.addEventListener("click", () => abrirModal(produto.id));
         listaProdutos.appendChild(card);
     });
 }
+
+function abrirModal(id) {
+    const produto = produtos.find(p => p.id === id);
+    if (!produto) return;
+
+    produtoAberto = produto;
+    tamanhoSelecionado = null;
+
+    modalNome.textContent = produto.nome;
+    modalPreco.textContent = `R$ ${produto.preco.toFixed(2)}`;
+    modalDescricao.textContent = produto.descricao;
+
+    modalImagemPrincipal.src = produto.imagens[0];
+    modalImagemPrincipal.alt = produto.nome;
+
+    modalMiniaturas.innerHTML = "";
+    if (produto.imagens.length > 1) {
+        modalMiniaturas.style.display = "flex";
+        produto.imagens.forEach((img, index) => {
+            const mini = document.createElement("img");
+            mini.src = img;
+            mini.alt = `${produto.nome} - foto ${index + 1}`;
+            if (index === 0) mini.classList.add("ativa");
+            mini.addEventListener("click", () => {
+                modalImagemPrincipal.src = img;
+                modalMiniaturas.querySelectorAll("img").forEach(m => m.classList.remove("ativa"));
+                mini.classList.add("ativa");
+            });
+            modalMiniaturas.appendChild(mini);
+        });
+    } else {
+        modalMiniaturas.style.display = "none";
+    }
+
+    // Tamanhos
+    modalTamanhos.innerHTML = "";
+    if (produto.tamanhos && produto.tamanhos.length > 0) {
+        modalTamanhosWrap.style.display = "block";
+        produto.tamanhos.forEach(tam => {
+            const btn = document.createElement("button");
+            btn.classList.add("btn-tamanho");
+            btn.textContent = tam;
+            btn.addEventListener("click", () => {
+                tamanhoSelecionado = tam;
+                modalTamanhos.querySelectorAll(".btn-tamanho").forEach(b => b.classList.remove("selecionado"));
+                btn.classList.add("selecionado");
+            });
+            modalTamanhos.appendChild(btn);
+        });
+    } else {
+        modalTamanhosWrap.style.display = "none";
+    }
+
+    modalOverlay.classList.add("aberto");
+}
+
+function fecharModal() {
+    modalOverlay.classList.remove("aberto");
+    produtoAberto = null;
+}
+
+document.querySelector("#modalFechar").addEventListener("click", fecharModal);
+modalOverlay.addEventListener("click", (e) => {
+    if (e.target === modalOverlay) fecharModal();
+});
+
+modalAdicionar.addEventListener("click", () => {
+    if (!produtoAberto) return;
+
+    if (produtoAberto.tamanhos && produtoAberto.tamanhos.length > 0 && !tamanhoSelecionado) {
+        alert("Selecione um tamanho antes de adicionar ao carrinho.");
+        return;
+    }
+
+    carrinho.push({
+        nome: produtoAberto.nome,
+        preco: produtoAberto.preco,
+        tamanho: tamanhoSelecionado
+    });
+
+    atualizarCarrinho();
+    fecharModal();
+    painelCarrinho.classList.add("aberto");
+});
+
 function atualizarCarrinho() {
     itensCarrinho.innerHTML = "";
     let total = 0;
@@ -34,7 +127,7 @@ function atualizarCarrinho() {
         const div = document.createElement("div");
         div.classList.add("item-carrinho");
         div.innerHTML = `
-            <span>${item.nome}</span>
+            <span>${item.nome}${item.tamanho ? " (" + item.tamanho + ")" : ""}</span>
             <span>R$ ${item.preco.toFixed(2)}</span>
             <button class="btn-remover" onclick="removerDoCarrinho(${index})">✕</button>
         `;
@@ -56,12 +149,9 @@ document.querySelector("#btnCarrinho").addEventListener("click", () => {
 document.querySelector("#fecharCarrinho").addEventListener("click", () => {
     painelCarrinho.classList.remove("aberto");
 });
+
 mostrarProdutos();
-function adicionarAoCarrinho(id) {
-    const produto = produtos.find(p => p.id === id);
-    carrinho.push(produto);
-    atualizarCarrinho();
-}
+
 const botoesFiltro = document.querySelectorAll(".btn-filtro");
 
 botoesFiltro.forEach(botao => {
@@ -79,6 +169,7 @@ botoesFiltro.forEach(botao => {
         }
     });
 });
+
 document.querySelector("#btnFinalizar").addEventListener("click", finalizarCompra);
 
 function finalizarCompra() {
@@ -91,7 +182,7 @@ function finalizarCompra() {
     let total = 0;
 
     carrinho.forEach(item => {
-        mensagem += `• ${item.nome} - R$ ${item.preco.toFixed(2)}%0A`;
+        mensagem += `• ${item.nome}${item.tamanho ? " (Tam. " + item.tamanho + ")" : ""} - R$ ${item.preco.toFixed(2)}%0A`;
         total += item.preco;
     });
 
